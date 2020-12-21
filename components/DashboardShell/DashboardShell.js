@@ -4,7 +4,6 @@ import {Avatar, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, Heading, Link,
 
 const DashboardShell = ({children}) => {
   const auth = useAuth();
-  console.log('auth', auth);
   return (
     <Flex flexDirection="column">
       <Flex backgroundColor="#ffffff" alignItems="center" justifyContent="space-between" px={8} py={4}>
