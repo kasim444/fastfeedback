@@ -20,7 +20,9 @@ const DashboardShell = ({children}) => {
         <Flex flexDirection="column" color="#000000" width="100%" maxWidth="800px" ml="auto" mr="auto">
           <Breadcrumb>
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink>Sites</BreadcrumbLink>
+              <BreadcrumbLink color="gray.700" fontSize="sm">
+                Sites
+              </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
           <Heading mb={4}>Sites</Heading>
