@@ -1,5 +1,5 @@
-import {useAuth} from '@/lib/auth';
-import {EmptyState, Logo} from '@/components/index';
+import { useAuth } from '@/lib/auth';
+import { EmptyState } from '@/components/index';
 
 export default function Dashboard() {
   const auth = useAuth();
