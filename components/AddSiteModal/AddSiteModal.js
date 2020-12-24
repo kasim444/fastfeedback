@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import { createSite } from '@/lib/db';
 import { useToast } from '@chakra-ui/react';
 import { useAuth } from '@/lib/auth';
+import { mutate } from 'swr';
 
 const AddSiteModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -25,11 +26,11 @@ const AddSiteModal = () => {
   const toast = useToast();
   const auth = useAuth();
 
-  const submitCreateSite = ({ site, link }, e) => {
+  const submitCreateSite = ({ name, link }, e) => {
     createSite({
       authorId: auth.user.uid,
       createdAt: new Date().toISOString(),
-      site,
+      name,
       url: link
     });
     toast({
@@ -39,6 +40,7 @@ const AddSiteModal = () => {
       duration: 5000,
       isClosable: true
     });
+    mutate('/api/sites');
     e.target.reset();
   };
 
@@ -54,15 +56,15 @@ const AddSiteModal = () => {
           <ModalHeader fontWeight="bold">Add Site</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl isInvalid={errors.site}>
-              <FormLabel htmlFor="site">Name</FormLabel>
+            <FormControl isInvalid={errors.name}>
+              <FormLabel htmlFor="name">Name</FormLabel>
               <Input
-                id="site"
-                name="site"
+                id="name"
+                name="name"
                 ref={register({ required: true })}
                 placeholder="My Site"
               />
-              <FormErrorMessage>{errors.site && 'Site is required'}</FormErrorMessage>
+              <FormErrorMessage>{errors.name && 'Site is required'}</FormErrorMessage>
             </FormControl>
 
             <FormControl mt={4} isInvalid={errors.link}>
