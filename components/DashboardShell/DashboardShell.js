@@ -10,6 +10,7 @@ import {
   Link,
   Stack
 } from '@chakra-ui/react';
+import { AddSiteModal } from '@/components/index';
 import { AddIcon } from '@chakra-ui/icons';
 
 const DashboardShell = ({ children }) => {
@@ -52,14 +53,7 @@ const DashboardShell = ({ children }) => {
           </Breadcrumb>
           <Flex justifyContent="space-between">
             <Heading mb={4}>Sites</Heading>
-            <Button
-              backgroundColor="gray.900"
-              color="white"
-              fontWeight="bold"
-              _hover={{ bg: 'gray.700' }}
-              leftIcon={<AddIcon w={3} />}>
-              Add Site
-            </Button>
+            <AddSiteModal leftIcon={<AddIcon w={3} />}>Add Site</AddSiteModal>
           </Flex>
           {children}
         </Flex>

@@ -15,7 +15,7 @@ function EmptyState() {
         You haven't added any sites
       </Heading>
       <Text mb={8}>Welcome 👋 &nbsp; Let's get started.</Text>
-      <AddSiteModal />
+      <AddSiteModal>Add your first site</AddSiteModal>
     </Flex>
   );
 }

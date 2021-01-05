@@ -2,10 +2,10 @@ import React from 'react';
 import NextLink from 'next/link';
 import { Box, Link } from '@chakra-ui/react';
 import { parseISO, format } from 'date-fns';
-
 import { DeleteSiteButton, Table, Tr, Th, Td } from '@/components/index';
 
 const SiteTable = ({ sites }) => {
+  console.log({ sites });
   return (
     <Box overflowX="scroll">
       <Table w="full">
@@ -20,7 +20,7 @@ const SiteTable = ({ sites }) => {
         </thead>
         <tbody>
           {sites.map((site, index) => (
-            <Box as="tr" key={site.id}>
+            <Box as="tr" key={site.name}>
               <Td>
                 <NextLink href="/site/[siteId]" as={`/site/${site.id}`} passHref>
                   <Link id={`site-table-link-${index}`} fontWeight="medium">
