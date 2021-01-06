@@ -6,6 +6,8 @@ import SiteTableSkeleton from './SiteTableSkeleton/SiteTableSkeleton';
 import { Table, Th, Td, Tr } from './Table/Table';
 import SiteTable from './SiteTable/SiteTable';
 import DeleteSiteButton from './DeleteSiteButton/DeleteSiteButton';
+import Feedback from './Feedback/Feedback';
+import FeedbackLink from './FeedbackLink/FeedbackLink';
 
 export {
   Logo,
@@ -18,5 +20,7 @@ export {
   Th,
   Td,
   Tr,
-  DeleteSiteButton
+  DeleteSiteButton,
+  Feedback,
+  FeedbackLink
 };
