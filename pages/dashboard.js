@@ -1,9 +1,11 @@
 import useSWR from 'swr';
 import { DashboardShell, EmptyState, SiteTable, SiteTableSkeleton } from '@/components/index';
 import { fetcher } from '@/utils/index';
+import { useAuth } from '@/lib/auth';
 
 export default function Dashboard() {
-  const { data, error } = useSWR('/api/sites', fetcher);
+  const { user } = useAuth();
+  const { data, error } = useSWR(user ? ['/api/sites', user.token] : null, fetcher);
 
   if (error) return <div>failed to load</div>;
 

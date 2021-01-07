@@ -12,9 +12,17 @@ import {
 } from '@chakra-ui/react';
 import { AddSiteModal } from '@/components/index';
 import { AddIcon } from '@chakra-ui/icons';
+import { useRouter } from 'next/router';
 
 const DashboardShell = ({ children }) => {
   const auth = useAuth();
+  const router = useRouter();
+  console.log(`auth user: ${JSON.stringify(auth.user, null, 2)}`);
+  const handleLogOut = () => {
+    auth.signout();
+    router.push('/');
+  };
+
   return (
     <Flex flexDirection="column">
       <Flex
@@ -29,11 +37,11 @@ const DashboardShell = ({ children }) => {
         </Stack>
         <Flex alignItems="center">
           {auth?.user && (
-            <Button variant="ghost" mr={2} onClick={() => auth.signout()}>
+            <Button variant="ghost" mr={2} onClick={handleLogOut}>
               Log Out
             </Button>
           )}
-          <Avatar size="sm" src={auth?.user?.photoURL} />
+          <Avatar size="sm" src={auth?.user?.photoUrl} />
         </Flex>
       </Flex>
       <Flex backgroundColor="gray.50" height="100vh" p={8}>
