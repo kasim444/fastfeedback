@@ -22,7 +22,6 @@ import { useAuth } from '@/lib/auth';
 import { fetcher } from '@/utils/index';
 
 const AddSiteModal = ({ children, leftIcon }) => {
-  const { data, error } = useSWR('/api/sites', fetcher);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit, register, errors, formState } = useForm();
   const toast = useToast();
@@ -44,7 +43,7 @@ const AddSiteModal = ({ children, leftIcon }) => {
       isClosable: true
     });
     mutate(
-      '/api/sites',
+      ['/api/sites', auth.user.token],
       async (data) => {
         return { sites: [...data.sites, newSite] };
       },

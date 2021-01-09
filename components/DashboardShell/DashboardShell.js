@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 const DashboardShell = ({ children }) => {
   const auth = useAuth();
   const router = useRouter();
-  console.log(`auth user: ${JSON.stringify(auth.user, null, 2)}`);
+
   const handleLogOut = () => {
     auth.signout();
     router.push('/');

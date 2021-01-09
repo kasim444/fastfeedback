@@ -7,7 +7,7 @@ export default function Dashboard() {
   const { user } = useAuth();
   const { data, error } = useSWR(user ? ['/api/sites', user.token] : null, fetcher);
 
-  if (error) return <div>failed to load</div>;
+  if (error) return <div>Failed to load</div>;
 
   if (!data) {
     return (
