@@ -43,10 +43,10 @@ const FeedbackPage = ({ initialFeedback }) => {
     e.preventDefault();
 
     const newFeedback = {
-      author: auth.user.displayName,
+      author: auth.user.name,
       authorId: auth.user.uid,
       createdAt: new Date().toISOString(),
-      providerId: auth.user.providerData[0].providerId,
+      providerId: auth.user.provider,
       rating: 5,
       siteId: router.query.siteId,
       status: 'pending',

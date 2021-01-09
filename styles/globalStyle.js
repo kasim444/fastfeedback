@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import {Global, css} from '@emotion/react';
+import { Global, css } from '@emotion/react';
 
-const GlobalStyle = ({children}) => {
+const GlobalStyle = ({ children }) => {
   return (
     <>
       <Head>
@@ -12,6 +12,11 @@ const GlobalStyle = ({children}) => {
           html {
             scroll-behavior: smooth;
           }
+
+          body {
+            font-family: 'Montserrat', sans-serif;
+          }
+
           #__next {
             display: flex;
             flex-direction: column;

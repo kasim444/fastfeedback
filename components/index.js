@@ -5,9 +5,13 @@ import AddSiteModal from './AddSiteModal/AddSiteModal';
 import SiteTableSkeleton from './SiteTableSkeleton/SiteTableSkeleton';
 import { Table, Th, Td, Tr } from './Table/Table';
 import SiteTable from './SiteTable/SiteTable';
+import SiteTableHeader from './SiteTableHeader/SiteTableHeader';
 import DeleteSiteButton from './DeleteSiteButton/DeleteSiteButton';
 import Feedback from './Feedback/Feedback';
 import FeedbackLink from './FeedbackLink/FeedbackLink';
+import FeedbackTable from './FeedbackTable/FeedbackTable';
+import FeedbackTableHeader from './FeedbackTableHeader/FeedbackTableHeader';
+import RemoveButton from './RemoveButton/RemoveButton';
 
 export {
   Logo,
@@ -15,6 +19,7 @@ export {
   EmptyState,
   AddSiteModal,
   SiteTable,
+  SiteTableHeader,
   SiteTableSkeleton,
   Table,
   Th,
@@ -22,5 +27,8 @@ export {
   Tr,
   DeleteSiteButton,
   Feedback,
-  FeedbackLink
+  FeedbackLink,
+  FeedbackTable,
+  FeedbackTableHeader,
+  RemoveButton
 };
