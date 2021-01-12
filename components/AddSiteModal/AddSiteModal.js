@@ -1,5 +1,5 @@
 import React from 'react';
-import useSWR, { mutate } from 'swr';
+import { mutate } from 'swr';
 import {
   Modal,
   ModalOverlay,
@@ -19,7 +19,6 @@ import { useForm } from 'react-hook-form';
 import { createSite } from '@/lib/db';
 import { useToast } from '@chakra-ui/react';
 import { useAuth } from '@/lib/auth';
-import { fetcher } from '@/utils/index';
 
 const AddSiteModal = ({ children, leftIcon }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,7 +33,7 @@ const AddSiteModal = ({ children, leftIcon }) => {
       name,
       url: link
     };
-    createSite(newSite);
+    const { id } = createSite(newSite);
     toast({
       title: 'Success!',
       description: `We've added your site.`,
@@ -44,9 +43,7 @@ const AddSiteModal = ({ children, leftIcon }) => {
     });
     mutate(
       ['/api/sites', auth.user.token],
-      async (data) => {
-        return { sites: [...data.sites, newSite] };
-      },
+      async (data) => ({ sites: [...data.sites, { id, ...newSite }] }),
       false
     );
     e.target.reset();
