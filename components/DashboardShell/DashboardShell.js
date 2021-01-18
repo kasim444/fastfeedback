@@ -8,10 +8,7 @@ const DashboardShell = ({ children }) => {
   const auth = useAuth();
   const router = useRouter();
 
-  const handleLogOut = () => {
-    auth.signout();
-    router.push('/');
-  };
+  const handleLogOut = () => router.push('/account');
 
   return (
     <Flex flexDirection="column">
@@ -36,11 +33,11 @@ const DashboardShell = ({ children }) => {
         </Stack>
         <Flex alignItems="center">
           {auth?.user && (
-            <Button variant="ghost" mr={2} onClick={handleLogOut}>
-              Log Out
+            <Button variant="ghost" onClick={handleLogOut}>
+              Account
+              <Avatar marginLeft={4} size="sm" src={auth?.user?.photoUrl} />
             </Button>
           )}
-          <Avatar size="sm" src={auth?.user?.photoUrl} />
         </Flex>
       </Flex>
       <Flex backgroundColor="gray.50" height="100vh" p={8}>
