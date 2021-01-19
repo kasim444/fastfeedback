@@ -12,10 +12,10 @@ function EmptyState() {
       alignItems="center"
       justifyContent="center">
       <Heading size="lg" as="h2" mb={4}>
-        You haven't added any sites
+        There isn't any feedback.
       </Heading>
       <Text mb={8}>Welcome 👋 &nbsp; Let's get started.</Text>
-      <AddSiteModal>Add your first site</AddSiteModal>
+      <AddSiteModal>Share your site!</AddSiteModal>
     </Flex>
   );
 }

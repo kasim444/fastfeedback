@@ -24,7 +24,7 @@ const DashboardShell = ({ children }) => {
               <Logo width={36} height={36} />
             </Link>
           </NextLink>
-          <NextLink href="/dashboard">
+          <NextLink href="/sites">
             <Link>Sites</Link>
           </NextLink>
           <NextLink href="/feedback">
@@ -40,7 +40,7 @@ const DashboardShell = ({ children }) => {
           )}
         </Flex>
       </Flex>
-      <Flex backgroundColor="gray.50" height="100vh" p={8}>
+      <Flex backgroundColor="gray.50" minHeight="100vh" p={8}>
         <Flex
           flexDirection="column"
           color="#000000"

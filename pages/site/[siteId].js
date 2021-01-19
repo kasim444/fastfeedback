@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 
-import { Feedback } from '@/components/index';
+import { Feedback, LoginButtons } from '@/components/index';
 import { useAuth } from '@/lib/auth';
 import { createFeedback } from '@/lib/db';
 import { getAllFeedback, getAllSites } from '@/lib/db-admin';
@@ -45,17 +45,37 @@ const FeedbackPage = ({ initialFeedback }) => {
     const newFeedback = {
       author: auth.user.name,
       authorId: auth.user.uid,
-      createdAt: new Date().toISOString(),
-      providerId: auth.user.provider,
-      rating: 5,
       siteId: router.query.siteId,
-      status: 'pending',
-      text: inputEl.current.value
+      text: inputEl.current.value,
+      createdAt: new Date().toISOString(),
+      provider: auth.user.provider,
+      status: 'pending'
     };
     setAllFeedback([newFeedback, ...allFeedback]);
     createFeedback(newFeedback);
     inputEl.current.value = '';
   };
+
+  const LoginOrLeaveFeedback = () =>
+    auth.user ? (
+      <Button
+        type="submit"
+        isDisabled={router.isFallback}
+        backgroundColor="gray.900"
+        color="white"
+        fontWeight="medium"
+        mt={4}
+        _hover={{ bg: 'gray.700' }}
+        _active={{
+          bg: 'gray.800',
+          transform: 'scale(0.95)'
+        }}
+      >
+        Leave Feedback
+      </Button>
+    ) : (
+        <LoginButtons />
+      );
 
   return (
     <Box display="flex" flexDirection="column" width="full" maxWidth="700px" margin="0 auto">
@@ -64,14 +84,7 @@ const FeedbackPage = ({ initialFeedback }) => {
           <FormControl my={8}>
             <FormLabel htmlFor="comment">Comment</FormLabel>
             <Input ref={inputEl} id="comment" placeholder="Leave a comment" />
-            <Button
-              mt={4}
-              type="submit"
-              fontWeight="medium"
-              isDisabled={router.isFallback}
-            >
-              Add Comment
-            </Button>
+            {!auth.loading && <LoginOrLeaveFeedback />}
           </FormControl>
         </Box>
       )}
