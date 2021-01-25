@@ -26,26 +26,34 @@ const AddSiteModal = ({ children, leftIcon }) => {
   const toast = useToast();
   const auth = useAuth();
 
-  const submitCreateSite = ({ name, link }, e) => {
+  const submitCreateSite = ({ name, url }, e) => {
     const newSite = {
       authorId: auth.user.uid,
       createdAt: new Date().toISOString(),
       name,
-      url: link
+      url,
+      settings: {
+        icons: true,
+        timestamp: true,
+        ratings: false
+      }
     };
     const { id } = createSite(newSite);
     toast({
       title: 'Success!',
-      description: `We've added your site.`,
+      description: "We've added your site.",
       status: 'success',
       duration: 5000,
       isClosable: true
     });
     mutate(
       ['/api/sites', auth.user.token],
-      async (data) => ({ sites: [{ id, ...newSite }, ...data.sites] }),
+      async (data) => ({
+        sites: [{ id, ...newSite }, ...data.sites]
+      }),
       false
     );
+    onClose();
     e.target.reset();
     onClose();
   };
@@ -82,11 +90,11 @@ const AddSiteModal = ({ children, leftIcon }) => {
             <FormControl mt={4} isInvalid={errors.link}>
               <FormLabel htmlFor="link">Link</FormLabel>
               <Input
-                name="link"
+                name="url"
                 placeholder="https://website.com"
                 ref={register({ required: true })}
               />
-              <FormErrorMessage>{errors.link && 'Link is required'}</FormErrorMessage>
+              <FormErrorMessage>{errors.url && 'Link is required'}</FormErrorMessage>
             </FormControl>
           </ModalBody>
 

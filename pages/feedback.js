@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import {
   DashboardShell,
-  EmptyState,
+  FeedbackEmptyState,
   FeedbackTable,
   FeedbackTableHeader,
   SiteTableSkeleton
@@ -27,7 +27,13 @@ export default function Feedback() {
   return (
     <DashboardShell>
       <FeedbackTableHeader />
-      {data?.feedback ? <FeedbackTable allFeedback={data.feedback} /> : <EmptyState />}
+      {
+        data.feedback.length ? (
+          <FeedbackTable allFeedback={data.feedback} />
+        ) : (
+            <FeedbackEmptyState />
+          )
+      }
     </DashboardShell>
   );
 }

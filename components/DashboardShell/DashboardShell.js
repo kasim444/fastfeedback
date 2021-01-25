@@ -7,7 +7,6 @@ import { Logo } from '@/components/index';
 const DashboardShell = ({ children }) => {
   const auth = useAuth();
   const router = useRouter();
-
   const handleLogOut = () => router.push('/account');
 
   return (

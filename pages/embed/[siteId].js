@@ -1,16 +1,19 @@
 import { useRouter } from 'next/router';
 import { Box } from '@chakra-ui/react';
+import 'iframe-resizer/js/iframeResizer.contentWindow';
 
 import { Feedback, FeedbackLink } from '@/components/index';
-import { getAllFeedback, getAllSites } from '@/lib/db-admin';
+import { getAllFeedback, getAllSites, getSite } from '@/lib/db-admin';
 
 export async function getStaticProps(context) {
-  const siteId = context.params.siteId;
-  const { feedback } = await getAllFeedback(siteId);
+  const [siteId, route] = context.params.site;
+  const { feedback } = await getAllFeedback(siteId, route);
+  const { site } = await getSite(siteId);
 
   return {
     props: {
-      initialFeedback: feedback
+      initialFeedback: feedback,
+      site
     },
     revalidate: 1
   };
@@ -20,7 +23,7 @@ export async function getStaticPaths() {
   const { sites } = await getAllSites();
   const paths = sites.map((site) => ({
     params: {
-      siteId: site.id.toString()
+      site: [site.id.toString()]
     }
   }));
 
@@ -30,16 +33,24 @@ export async function getStaticPaths() {
   };
 }
 
-const EmbeddedFeedbackPage = ({ initialFeedback }) => {
+const EmbeddedFeedbackPage = ({ initialFeedback, site }) => {
   const router = useRouter();
 
   return (
     <Box display="flex" flexDirection="column" width="full">
-      <FeedbackLink siteId={router.query.siteId} />
-      {initialFeedback &&
-        initialFeedback.map((feedback) => (
-          <Feedback key={feedback.id} {...feedback} />
-        ))}
+      <FeedbackLink paths={router.query.site} />
+      {initialFeedback?.length ? (
+        initialFeedback.map((feedback, index) => (
+          <Feedback
+            key={feedback.id}
+            settings={site?.settings}
+            isLast={index === initialFeedback.length - 1}
+            {...feedback}
+          />
+        ))
+      ) : (
+          <Box>There are no comments for this site.</Box>
+        )}
     </Box>
   );
 };

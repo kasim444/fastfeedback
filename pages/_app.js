@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 import { ChakraProvider } from '@chakra-ui/react';
 import { AuthProvider } from '../lib/auth';
 import theme from '@/styles/theme';
@@ -13,7 +13,6 @@ function MyApp({ Component, pageProps }) {
     const logEvent = (url) => {
       analytics().setCurrentScreen(url);
       analytics().logEvent('screen_view');
-      console.log({url})
     };
 
     routers.events.on('routeChangeComplete', logEvent);

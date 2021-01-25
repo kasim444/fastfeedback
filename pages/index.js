@@ -1,36 +1,32 @@
-import { useAuth } from '@/lib/auth';
-import { Text, Button, Flex, Box } from '@chakra-ui/react';
-import { Feedback, FeedbackLink, Logo, LoginButtons } from '@/components/index';
 import Head from 'next/head';
-import { getAllFeedback } from '@/lib/db-admin';
+import { Box, Button, Flex, Text, Icon, Link } from '@chakra-ui/react';
 
+import { useAuth } from '@/lib/auth';
+import { getAllFeedback, getSite } from '@/lib/db-admin';
+import { Feedback, FeedbackLink, LoginButtons } from '@/components/index';
 
-const SITE_ID = '8GSz7HUukpXT6Ll6tADC';
+const SITE_ID = 'nIAcWXGKYaYNV4CxzCwX';
 
 export async function getStaticProps(context) {
   const { feedback } = await getAllFeedback(SITE_ID);
+  const { site } = await getSite(SITE_ID);
 
   return {
     props: {
-      allFeedback: feedback || []
+      allFeedback: feedback,
+      site
     },
     revalidate: 1
   };
 }
 
-export default function Home({ allFeedback }) {
+const Home = ({ allFeedback, site }) => {
   const auth = useAuth();
+
   return (
     <>
       <Box bg="gray.100" py={16}>
-        <Flex
-          as="main"
-          direction="column"
-          align="center"
-          justify="center"
-          minH="100vh"
-          maxW="400px"
-          margin="0 auto">
+        <Flex as="main" direction="column" maxW="700px" margin="0 auto">
           <Head>
             <script
               dangerouslySetInnerHTML={{
@@ -41,29 +37,39 @@ export default function Home({ allFeedback }) {
             `
               }}
             />
-            <title>Fast Feedback</title>
           </Head>
-          <Logo />
-          <Text mb={4} p={4} textAlign="center">
-            <Text as="span" fontSize="lg" fontWeight="bold" display="inline">
+          <Icon color="black" name="logo" size="48px" mb={2} />
+          <Text mb={4} fontSize="lg" py={4}>
+            <Text as="span" fontWeight="bold" display="inline">
               Fast Feedback
             </Text>
-            {` is the easiest way to add comments or reviews to your static site. It's still a work-in-progress, but you can try it out by logging in.`}
+            {' is being built as part of '}
+            <Link
+              href="https://react2025.com"
+              isExternal
+              textDecoration="underline"
+            >
+              React 2025
+            </Link>
+            {`. It's the easiest way to add comments or reviews to your static site. It's still a work-in-progress, but you can try it out by logging in.`}
           </Text>
           {auth.user ? (
-            <>
-              <Button as="a" size="lg" fontWeight="medium" href="/sites">
-                View Dashboard
-              </Button>
-              <Button
-                mt={2}
-                size="lg"
-                variant="link"
-                fontWeight="medium"
-                onClick={() => auth.signout()}>
-                Log Out
-              </Button>
-            </>
+            <Button
+              as="a"
+              href="/sites"
+              backgroundColor="gray.900"
+              color="white"
+              fontWeight="medium"
+              mt={4}
+              maxW="200px"
+              _hover={{ bg: 'gray.700' }}
+              _active={{
+                bg: 'gray.800',
+                transform: 'scale(0.95)'
+              }}
+            >
+              View Dashboard
+            </Button>
           ) : (
               <LoginButtons />
             )}
@@ -75,12 +81,20 @@ export default function Home({ allFeedback }) {
         width="full"
         maxWidth="700px"
         margin="0 auto"
-        mt={8}>
-        <FeedbackLink siteId={SITE_ID} />
-        {allFeedback.map((feedback) => (
-          <Feedback key={feedback.id} {...feedback} />
+        mt={8}
+      >
+        <FeedbackLink paths={[SITE_ID]} />
+        {allFeedback.map((feedback, index) => (
+          <Feedback
+            key={feedback.id}
+            settings={site?.settings}
+            isLast={index === allFeedback.length - 1}
+            {...feedback}
+          />
         ))}
       </Box>
     </>
   );
-}
+};
+
+export default Home;

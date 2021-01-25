@@ -1,10 +1,10 @@
 import useSWR from 'swr';
 import {
   DashboardShell,
-  EmptyState,
   SiteTable,
   SiteTableHeader,
-  SiteTableSkeleton
+  SiteTableSkeleton,
+  SiteEmptyState
 } from '@/components/index';
 import { fetcher } from '@/utils/index';
 import { useAuth } from '@/lib/auth';
@@ -27,7 +27,13 @@ export default function Dashboard() {
   return (
     <DashboardShell>
       <SiteTableHeader />
-      {data?.sites ? <SiteTable sites={data.sites} /> : <EmptyState />}
+      {
+        data.sites.length ? (
+          <SiteTable sites={data.sites} />
+        ) : (
+            <SiteEmptyState />
+          )
+      }
     </DashboardShell>
   );
 }
