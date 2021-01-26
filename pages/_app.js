@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { ChakraProvider } from '@chakra-ui/react';
+import { DefaultSeo } from 'next-seo';
 import { AuthProvider } from '../lib/auth';
 import theme from '@/styles/theme';
 import GlobalStyle from '@/styles/globalStyle';
