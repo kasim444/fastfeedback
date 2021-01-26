@@ -1,6 +1,6 @@
 import { Button, Flex, Avatar, Heading, Text } from '@chakra-ui/react';
 import { useAuth } from '@/lib/auth';
-import { DashboardShell } from '@/components/index';
+import { DashboardShell, Page } from '@/components/index';
 
 const Account = () => {
   const { user, signout } = useAuth();
@@ -33,4 +33,10 @@ const Account = () => {
   );
 };
 
-export default Account;
+const AccountPage = () => (
+  <Page name="Account" path="/account">
+    <Account />
+  </Page>
+);
+
+export default AccountPage;

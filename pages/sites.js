@@ -4,12 +4,13 @@ import {
   SiteTable,
   SiteTableHeader,
   SiteTableSkeleton,
-  SiteEmptyState
+  SiteEmptyState,
+  Page
 } from '@/components/index';
 import fetcher from '@/utils/fetcher';
 import { useAuth } from '@/lib/auth';
 
-export default function Dashboard() {
+const Dashboard = () => {
   const { user } = useAuth();
   const { data, error } = useSWR(user ? ['/api/sites', user.token] : null, fetcher);
 
@@ -37,3 +38,11 @@ export default function Dashboard() {
     </DashboardShell>
   );
 }
+
+const DashboardPage = () => (
+  <Page name="Dashboard" path="/sites">
+    <Dashboard />
+  </Page>
+);
+
+export default DashboardPage;

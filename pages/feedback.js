@@ -4,12 +4,13 @@ import {
   FeedbackEmptyState,
   FeedbackTable,
   FeedbackTableHeader,
-  SiteTableSkeleton
+  SiteTableSkeleton,
+  Page
 } from '@/components/index';
 import fetcher from '@/utils/fetcher';
 import { useAuth } from '@/lib/auth';
 
-export default function AllFeedback() {
+const AllFeedback = () => {
   const { user } = useAuth();
   const { data, error } = useSWR(user ? ['/api/feedback', user.token] : null, fetcher);
 
@@ -37,3 +38,11 @@ export default function AllFeedback() {
     </DashboardShell>
   );
 }
+
+const AllFeedbackPage = () => (
+  <Page name="All Feedback" path="/feedback">
+    <AllFeedback />
+  </Page>
+);
+
+export default AllFeedbackPage

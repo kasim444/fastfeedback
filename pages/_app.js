@@ -5,6 +5,7 @@ import theme from '@/styles/theme';
 import GlobalStyle from '@/styles/globalStyle';
 import { useRouter } from 'next/router';
 import analytics from '@/lib/analytics'
+import SEO from '../next-seo.config'
 
 function MyApp({ Component, pageProps }) {
   const routers = useRouter();
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
       <ChakraProvider theme={theme}>
+        <DefaultSeo {...SEO} />
         <GlobalStyle />
         <Component {...pageProps} />
       </ChakraProvider>

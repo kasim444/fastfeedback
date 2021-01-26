@@ -19,6 +19,7 @@
     "iframe-resizer": "^4.3.1",
     "js-cookie": "^2.2.1",
     "next": "10.0.0",
+    "next-seo": "^4.17.0",
     "pino": "^6.10.0",
     "pino-logflare": "^0.3.5",
     "react": "17.0.1",

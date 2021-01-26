@@ -13,6 +13,7 @@ import FeedbackTable from './FeedbackTable/FeedbackTable';
 import FeedbackTableHeader from './FeedbackTableHeader/FeedbackTableHeader';
 import LoginButtons from './LoginButtons/LoginButtons';
 import Logo from './Logo/Logo';
+import Page from './Page/Page'
 import SiteEmptyState from './SiteEmptyState/SiteEmptyState';
 import SiteHeader from './SiteHeader/SiteHeader';
 import SiteTable from './SiteTable/SiteTable';
@@ -34,6 +35,7 @@ export {
   FeedbackTableHeader,
   LoginButtons,
   Logo,
+  Page,
   SiteEmptyState,
   SiteHeader,
   SiteTable,
