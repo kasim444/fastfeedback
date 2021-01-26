@@ -6,10 +6,10 @@ import {
   FeedbackTableHeader,
   SiteTableSkeleton
 } from '@/components/index';
-import { fetcher } from '@/utils/index';
+import fetcher from '@/utils/fetcher';
 import { useAuth } from '@/lib/auth';
 
-export default function Feedback() {
+export default function AllFeedback() {
   const { user } = useAuth();
   const { data, error } = useSWR(user ? ['/api/feedback', user.token] : null, fetcher);
 
@@ -28,7 +28,7 @@ export default function Feedback() {
     <DashboardShell>
       <FeedbackTableHeader />
       {
-        data.feedback.length ? (
+        data?.feedback?.length ? (
           <FeedbackTable allFeedback={data.feedback} />
         ) : (
             <FeedbackEmptyState />

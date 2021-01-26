@@ -1,11 +1,11 @@
 import Head from 'next/head';
-import { Box, Button, Flex, Text, Icon, Link } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, Link } from '@chakra-ui/react';
 
 import { useAuth } from '@/lib/auth';
 import { getAllFeedback, getSite } from '@/lib/db-admin';
-import { Feedback, FeedbackLink, LoginButtons } from '@/components/index';
+import { Feedback, FeedbackLink, LoginButtons, Logo } from '@/components/index';
 
-const SITE_ID = 'nIAcWXGKYaYNV4CxzCwX';
+const SITE_ID = process.env.NEXT_PUBLIC_HOME_PAGE_SITE_ID;
 
 export async function getStaticProps(context) {
   const { feedback } = await getAllFeedback(SITE_ID);
@@ -38,7 +38,9 @@ const Home = ({ allFeedback, site }) => {
               }}
             />
           </Head>
-          <Icon color="black" name="logo" size="48px" mb={2} />
+          <Flex justify='center'>
+            <Logo />
+          </Flex>
           <Text mb={4} fontSize="lg" py={4}>
             <Text as="span" fontWeight="bold" display="inline">
               Fast Feedback

@@ -1,74 +1,65 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
+import { Box, FormControl, Textarea, Button } from '@chakra-ui/react';
+import useSWR, { mutate } from 'swr';
 
-import { DashboardShell, SiteHeader, Feedback, LoginButtons } from '@/components/index';
 import { useAuth } from '@/lib/auth';
 import { createFeedback } from '@/lib/db';
-import { getAllFeedback, getAllSites, getSite } from '@/lib/db-admin';
+import fetcher from '@/utils/fetcher';
+import {
+  Feedback, DashboardShell,
+  SiteHeader,
+  LoginButtons
+} from '@/components/index';
 
-export async function getStaticProps(context) {
-  const [siteId, route] = context.params.site;
-  const { feedback } = await getAllFeedback(siteId, route);
-  const { site } = await getSite(siteId);
-
-  return {
-    props: {
-      initialFeedback: feedback,
-      site
-    },
-    revalidate: 1
-  };
-}
-
-export async function getStaticPaths() {
-  const { sites } = await getAllSites();
-  const paths = sites.map((site) => ({
-    params: {
-      site: [site.id.toString()]
-    }
-  }));
-
-  return {
-    paths,
-    fallback: true
-  };
-}
-
-const FeedbackPage = ({ initialFeedback, site }) => {
-  const auth = useAuth();
-  const router = useRouter();
+const FeedbackPage = () => {
+  const { user, loading } = useAuth();
   const inputEl = useRef(null);
-  const [allFeedback, setAllFeedback] = useState(initialFeedback);
-  const [siteId, route] = router.query.site;
+  const router = useRouter();
+  const siteAndRoute = router.query?.site;
+  const siteId = siteAndRoute ? siteAndRoute[0] : null;
+  const route = siteAndRoute ? siteAndRoute[1] : null;
+  const feedbackApi = route
+    ? `/api/feedback/${siteId}/${route}`
+    : `/api/feedback/${siteId}`;
 
-  useEffect(() => {
-    setAllFeedback(initialFeedback);
-  }, [initialFeedback]);
+  const { data: siteData } = useSWR(`/api/site/${siteId}`, fetcher);
+  const { data: feedbackData } = useSWR(feedbackApi, fetcher);
+
+  const site = siteData?.site;
+  const allFeedback = feedbackData?.feedback;
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     const newFeedback = {
-      siteId: siteId,
+      siteId,
+      siteAuthorId: site.authorId,
       route: route || '/',
-      author: auth.user.name,
-      authorId: auth.user.uid,
+      author: user.name,
+      authorId: user.uid,
       text: inputEl.current.value,
       createdAt: new Date().toISOString(),
-      provider: auth.user.provider,
-      status: 'pending',
+      provider: user.provider,
+      status: 'pending'
     };
-    setAllFeedback([newFeedback, ...allFeedback]);
-    createFeedback(newFeedback);
+
     inputEl.current.value = '';
+    createFeedback(newFeedback);
+    mutate(
+      feedbackApi,
+      async (data) => ({
+        feedback: [newFeedback, ...data.feedback]
+      }),
+      false
+    );
   };
 
   const LoginOrLeaveFeedback = () =>
-    auth.user ? (
+    user ? (
       <Button
         type="submit"
-        isDisabled={router.isFallback}
+        isDisabled={!siteData || !feedbackData}
         backgroundColor="gray.900"
         color="white"
         fontWeight="medium"
@@ -88,24 +79,39 @@ const FeedbackPage = ({ initialFeedback, site }) => {
   return (
     <DashboardShell>
       <SiteHeader
-        isSiteOwner={true}
+        isSiteOwner={site?.authorId === user?.uid}
         site={site}
         siteId={siteId}
         route={route}
       />
-      <Box display="flex" flexDirection="column" width="full" maxWidth="700px" margin="0 auto">
-        {auth.user && (
-          <Box as="form" onSubmit={onSubmit}>
-            <FormControl my={8}>
-              <FormLabel htmlFor="comment">Comment</FormLabel>
-              <Input ref={inputEl} id="comment" placeholder="Leave a comment" />
-              {!auth.loading && <LoginOrLeaveFeedback />}
-            </FormControl>
-          </Box>
-        )}
-        {allFeedback && allFeedback.map((feedback) => (
-          <Feedback key={feedback.id} {...feedback} />
-        ))}
+      <Box
+        display="flex"
+        mx={4}
+        flexDirection="column"
+        width="full"
+        maxWidth="700px"
+      >
+        <Box as="form" onSubmit={onSubmit}>
+          <FormControl mb={8}>
+            <Textarea
+              ref={inputEl}
+              id="comment"
+              placeholder="Leave a comment"
+              isDisabled={!user}
+              h="100px"
+            />
+            {!loading && <LoginOrLeaveFeedback />}
+          </FormControl>
+        </Box>
+        {allFeedback &&
+          allFeedback.map((feedback, index) => (
+            <Feedback
+              key={feedback.id}
+              settings={site?.settings}
+              isLast={index === allFeedback.length - 1}
+              {...feedback}
+            />
+          ))}
       </Box>
     </DashboardShell>
   );

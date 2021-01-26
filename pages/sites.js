@@ -6,7 +6,7 @@ import {
   SiteTableSkeleton,
   SiteEmptyState
 } from '@/components/index';
-import { fetcher } from '@/utils/index';
+import fetcher from '@/utils/fetcher';
 import { useAuth } from '@/lib/auth';
 
 export default function Dashboard() {

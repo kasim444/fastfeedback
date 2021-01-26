@@ -3,7 +3,6 @@ import { Box } from '@chakra-ui/react';
 import { Table, Tr, Th, FeedbackRow } from '@/components/index';
 
 const FeedbackTable = ({ allFeedback }) => {
-  console.log({allFeedback})
 
   return (
     <Box overflowX="scroll">
