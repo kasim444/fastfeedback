@@ -22,7 +22,7 @@ export default function FeedbackLink({ paths }) {
         color={linkColor[colorMode]}
         fontWeight="bold"
         fontSize="sm"
-        href={`/site/${paths.join('/')}`}
+        href={`/site/${paths}`}
         target="_blank"
       >
         Leave a comment →
