@@ -28,7 +28,6 @@ const FeedbackPage = () => {
 
   const site = siteData?.site;
   const allFeedback = feedbackData?.feedback;
-
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -38,7 +37,7 @@ const FeedbackPage = () => {
       route: route || '/',
       author: user.name,
       authorId: user.uid,
-      text: inputEl.current.value,
+      text: inputEl.current.value.replace('\n', '\n\n'),
       createdAt: new Date().toISOString(),
       provider: user.provider,
       status: 'pending'
